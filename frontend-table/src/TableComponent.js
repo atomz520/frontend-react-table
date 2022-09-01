@@ -1,15 +1,36 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useMemo} from 'react'
 
-import TableFilter from "react-table-filter";
-import "react-table-filter/lib/styles.css";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+
+import { TextField } from '@mui/material';
+
+import Pagination from './Pagination'
+
+const PAGE_SIZE = 10;
 
 export default function TableComponent({data}) {
 
-  const[tableData, setTableData] = useState(data)
+  const[tableData, setTableData] = useState([])
+  const[searchedData, setSearchedData] = useState(data)
   const[tableHeading, setTableHeading] = useState(Object.keys(data[0]))
   
   const[checked, setChecked] = useState(new Map())
   const[selectedItems, setSelectedItems] = useState()
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+
+  useMemo(() => {
+    const firstPageIndex = (currentPage - 1) * PAGE_SIZE;
+    const lastPageIndex = firstPageIndex + PAGE_SIZE;
+    setTableData(searchedData.slice(firstPageIndex, lastPageIndex))
+  }, [currentPage, searchedData]);
+
 
   const handleCheckbox = (event) => {
     if (event.target.checked) {
@@ -23,7 +44,7 @@ export default function TableComponent({data}) {
   const search = (event) => {
     //convert input text to lower case
     var lowerCase = event.target.value.toLowerCase();
-    setTableData(
+    setSearchedData(
       data.filter(el => {
         return (
           el.body.includes(lowerCase)
@@ -50,49 +71,58 @@ export default function TableComponent({data}) {
   return (
     <>
       <div>
-        <button onClick={sort}>Sort By Title</button>
-        Search Body:
-        <input onChange={search}></input>
+        <br />
+        <br />
+        <TextField onChange={search} label="Search Body Column"></TextField>
+        <br />
+        <br />
       </div>
-      <table border="1">
-        <thead>
-          <tr>
-            <th key="check">Check</th>
+      <button onClick={sort}>Sort By Title</button>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell key="select"><b>Select</b></TableCell>
             {
               tableHeading.map((item, key) => {
                 return (
-                  <th 
+                  <TableCell 
                     key={key} 
                     filterkey={item} 
                     className="cell" 
                     casesensitive={"true"}
                     showsearch={"true"}
                   >
-                    {item}
-                  </th>
+                    <b>{item}</b>
+                  </TableCell>
                 )
               })
             }
-          </tr>
-        </thead>
-        <tbody>
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {tableData.map(data => {
             return (
-              <tr key={data.id}>
-                <td><input key={data.id} data-index={data.id} type="checkbox" onChange={handleCheckbox}></input></td>
+              <TableRow key={data.id}>
+                <TableCell><input key={data.id} data-index={data.id} type="checkbox" onChange={handleCheckbox}></input></TableCell>
                 {
                   Object.values(data).map((item, key) => {
                     return (
-                      <td key={key}>{item}</td>
+                      <TableCell key={key} style={{ padding: 0 }}>{item}</TableCell>
                     )
                   })
                 }
-              </tr>
+              </TableRow>
             )
           })}
-        </tbody>
-      </table>
-      
+        </TableBody>
+      </Table>
+      <Pagination
+        className="pagination-bar"
+        currentPage={currentPage}
+        totalCount={searchedData.length}
+        pageSize={PAGE_SIZE}
+        onPageChange={page => setCurrentPage(page)}
+      />
       <h2>Selected Items</h2>
       <p>{selectedItems}</p>
     </>

@@ -1,6 +1,8 @@
 .pagination-container {
   display: flex;
   list-style-type: none;
+  justify-content: center;
+  padding-inline-start: 0px;
 
   .pagination-item {
     padding: 0 12px;

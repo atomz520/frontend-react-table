@@ -1,10 +1,8 @@
 import React, {useState, useEffect, useMemo} from 'react'
 
-import TableComponent from './TableComponent';
+import Container from '@mui/material/Container';
 
-import Pagination from './Pagination'
-import TableFilter from "react-table-filter";
-import "react-table-filter/lib/styles.css";
+import TableComponent from './TableComponent';
 
 let PageSize = 10;
 
@@ -57,33 +55,9 @@ export default function TableView() {
 
   return (
     <>
-      <TableComponent data={postsFull} />
-      {/* <table>
-        <thead>
-          <tr>
-            <Header array={posts} />
-          </tr>
-        </thead>
-        <tbody>
-          {currentTableData.map(post => {
-            return (
-              <tr key={post.id}>
-                <td>{post.userId}</td>
-                <td>{post.id}</td>
-                <td>{post.title}</td>
-                <td>{post.body}</td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
-      <Pagination
-        className="pagination-bar"
-        currentPage={currentPage}
-        totalCount={posts.length}
-        pageSize={PageSize}
-        onPageChange={page => setCurrentPage(page)}
-      /> */}
+      <Container>
+        <TableComponent data={postsFull} />
+      </Container>
     </>
     
 
