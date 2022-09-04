@@ -3,7 +3,6 @@ import React, {useState, useMemo} from 'react'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
@@ -83,6 +82,7 @@ export default function TableComponent({data}) {
           <TableRow>
             <TableCell key="select"><b>Select</b></TableCell>
             {
+              // Have table header to be dynamic
               tableHeading.map((item, key) => {
                 return (
                   <TableCell 
@@ -100,7 +100,9 @@ export default function TableComponent({data}) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {tableData.map(data => {
+          {
+            // Have table data to be dynamic
+            tableData.map(data => {
             return (
               <TableRow key={data.id}>
                 <TableCell><input key={data.id} data-index={data.id} type="checkbox" onChange={handleCheckbox}></input></TableCell>
@@ -123,9 +125,10 @@ export default function TableComponent({data}) {
         pageSize={PAGE_SIZE}
         onPageChange={page => setCurrentPage(page)}
       />
+
+      {/* Display selected items */}
       <h2>Selected Items</h2>
       <p>{selectedItems}</p>
     </>
-    
   )
 }
