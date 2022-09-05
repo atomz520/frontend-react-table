@@ -16,9 +16,9 @@ export default function TableComponent({data}) {
 
   const[tableData, setTableData] = useState([])
   const[searchedData, setSearchedData] = useState(data)
-  const[tableHeading, setTableHeading] = useState(Object.keys(data[0]))
+  const[tableHeading] = useState(Object.keys(data[0]))
   
-  const[checked, setChecked] = useState(new Map())
+  const[checked] = useState(new Map())
   const[selectedItems, setSelectedItems] = useState()
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -77,6 +77,7 @@ export default function TableComponent({data}) {
         <br />
       </div>
       <button onClick={sort}>Sort By Title</button>
+      <h2 data-testid="tableHeading">Table</h2>
       <Table>
         <TableHead>
           <TableRow>

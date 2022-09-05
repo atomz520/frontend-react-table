@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import axios from 'axios'
 
 import Container from '@mui/material/Container';
 import TableComponent from './TableComponent';
@@ -10,9 +11,8 @@ export default function TableView() {
 
   async function getPostsFromApi() {
     try {
-      let response = await fetch('https://jsonplaceholder.typicode.com/posts');
-      let responseJson = await response.json();
-      setPostsFull(responseJson)
+      const responseJson = await axios.get('https://jsonplaceholder.typicode.com/posts')
+      setPostsFull(responseJson.data)
       setIsLoading(false)
      } catch(error) {
       console.error(error);
@@ -24,7 +24,7 @@ export default function TableView() {
   }, [])
 
   if (isLoading) {
-    return 'Loading'
+    return <span data-testid="loading">Loading</span>
   }
 
   return (
